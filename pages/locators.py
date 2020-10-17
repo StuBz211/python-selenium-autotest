@@ -24,4 +24,5 @@ class ProductPageLocators:
     CARD = (By.CSS_SELECTOR, '.btn-cart')
     PRODUCT_NAME = (By.CSS_SELECTOR, 'h1')
     PRODUCT_PRICE = (By.CSS_SELECTOR, '.product_main > .price_color')
-    MESSAGES = (By.CSS_SELECTOR, "#messages")
+    ALERT_ADDED_TO_CART = (By.CSS_SELECTOR, "div.alertinner strong")
+    ALERT_CART_STATUS = (By.CSS_SELECTOR, ".alert-noicon.alert-info p")
