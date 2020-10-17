@@ -64,8 +64,11 @@ class BasePage:
         from pages import LoginPage
         link = self.browser.find_element(*MainPageLocators.LOGIN_LINK)
         link.click()
-        alert = self.browser.switch_to.alert
-        alert.accept()
+        try:
+            alert = self.browser.switch_to.alert
+            alert.accept()
+        except:
+            pass
         return LoginPage(browser=self.browser, url=self.browser.current_url)
 
     def go_to_basket(self):
@@ -73,3 +76,9 @@ class BasePage:
         link = self.browser.find_element(*MainPageLocators.BASKET_LINK)
         link.click()
         return BasketPage(browser=self.browser, url=self.browser.current_url)
+
+    def should_be_authorized_user(self):
+        assert self.is_element_present(*MainPageLocators.USER_ICON), "User not authorize"
+
+    def should_be_login_link(self):
+        assert self.is_element_present(*MainPageLocators.LOGIN_LINK)

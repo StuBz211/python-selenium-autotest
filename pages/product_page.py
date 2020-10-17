@@ -3,9 +3,12 @@ from .locators import ProductPageLocators
 
 
 class ProductPage(BasePage):
-    def add_to_card(self):
+    def add_to_card(self, quiz_flag=False):
         btn = self.get_element(*ProductPageLocators.ADD_TO_CARD)
         btn.click()
+
+        if quiz_flag:
+            self.solve_quiz_and_get_code()
 
     def is_book_added(self):
         book_name = self.get_element(*ProductPageLocators.PRODUCT_NAME).text

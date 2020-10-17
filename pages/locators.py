@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 class MainPageLocators:
     LOGIN_LINK = (By.CSS_SELECTOR, '#login_link')
     BASKET_LINK = (By.CSS_SELECTOR, '.basket-mini .btn')
+    USER_ICON = (By.CSS_SELECTOR, ".icon-user")
 
 
 class LoginPageLocators:
