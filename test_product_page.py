@@ -10,36 +10,35 @@ links = [f"{base_url}?promo=offer{i}" for i in range(10)]
 product_link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
 
 
-@pytest.mark.parametrize('link', links)
-def test_guest_can_add_product_to_basket(browser, link):
-    page = ProductPage(browser, link)
-    page.open()
-    page.add_to_card()
-    page.solve_quiz_and_get_code()
-    page.is_book_added()
+@pytest.mark.login_guest
+class TestProductPage:
+    @pytest.mark.parametrize('link', [links[0]])
+    def test_guest_can_add_product_to_basket(self, browser, link):
+        page = ProductPage(browser, link)
+        page.open()
+        page.add_to_card()
+        page.solve_quiz_and_get_code()
+        page.is_book_added()
 
+    def test_guest_cant_see_success_message_after_adding_product_to_basket(self, browser):
+        page = ProductPage(browser, product_link)
+        page.open()
+        page.add_to_card()
+        assert not page.is_not_element_present(*ProductPageLocators.ALERT_ADDED_TO_CART)
 
-def test_guest_cant_see_success_message_after_adding_product_to_basket(browser):
-    page = ProductPage(browser, product_link)
-    page.open()
-    page.add_to_card()
-    assert not page.is_not_element_present(*ProductPageLocators.ALERT_ADDED_TO_CART)
+    def test_guest_cant_see_success_message(self, browser):
+        page = ProductPage(browser, product_link)
+        page.open()
+        assert not page.is_not_element_present(*ProductPageLocators.ALERT_ADDED_TO_CART)
 
+    def test_message_disappeared_after_adding_product_to_basket(self, browser):
+        page = ProductPage(browser, product_link)
+        page.open()
+        assert not page.is_disappeared(*ProductPageLocators.ALERT_ADDED_TO_CART)
 
-def test_guest_cant_see_success_message(browser):
-    page = ProductPage(browser, product_link)
-    page.open()
-    assert not page.is_not_element_present(*ProductPageLocators.ALERT_ADDED_TO_CART)
-
-
-def test_message_disappeared_after_adding_product_to_basket(browser):
-    page = ProductPage(browser, product_link)
-    page.open()
-    assert not page.is_disappeared(*ProductPageLocators.ALERT_ADDED_TO_CART)
-
-
-def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
-    page = ProductPage(browser, product_link)
-    basket_page = page.go_to_basket()
-    assert basket_page.is_basket_empty()
-    assert basket_page.has_empty_basket_msg()
+    def test_guest_cant_see_product_in_basket_opened_from_product_page(self, browser):
+        page = ProductPage(browser, product_link)
+        page.open()
+        basket_page = page.go_to_basket()
+        basket_page.basket_should_by_empty()
+        basket_page.basket_should_by_empty_msg()
