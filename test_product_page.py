@@ -1,6 +1,6 @@
 import pytest
 
-from pages.product_page import ProductPage
+from pages import ProductPage
 from pages.locators import ProductPageLocators
 
 
@@ -37,3 +37,9 @@ def test_message_disappeared_after_adding_product_to_basket(browser):
     page.open()
     assert not page.is_disappeared(*ProductPageLocators.ALERT_ADDED_TO_CART)
 
+
+def test_guest_cant_see_product_in_basket_opened_from_product_page(browser):
+    page = ProductPage(browser, product_link)
+    basket_page = page.go_to_basket()
+    assert basket_page.is_basket_empty()
+    assert basket_page.has_empty_basket_msg()
